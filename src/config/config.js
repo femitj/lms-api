@@ -31,6 +31,8 @@ module.exports = {
     port: process.env.PRODUCTION_PORT,
     logging: false,
     dialect,
-    ssl: true
+    dialectOptions: {
+      ssl: true
+    }
   }
 };
