@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import logger from 'morgan';
 import router from './routes';
@@ -12,6 +13,7 @@ if (NODE_ENV === 'development' || NODE_ENV === 'production') {
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.status(200).json({
