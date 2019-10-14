@@ -2,19 +2,17 @@ module.exports = (sequelize, DataTypes) => {
   const Blog = sequelize.define('Blog', {
     title: DataTypes.STRING,
     body: DataTypes.TEXT,
-    featured_img: DataTypes.STRING,
+    featuredImg: DataTypes.STRING,
     slug: DataTypes.STRING,
-    meta_title: DataTypes.STRING,
-    meta_description: DataTypes.STRING,
-    meta_keywords: DataTypes.STRING,
-    authorId: DataTypes.INTEGER,
+    metaTitle: DataTypes.STRING,
+    metaDescription: DataTypes.STRING,
+    metaKeywords: DataTypes.STRING,
+    authorId: DataTypes.UUID,
     tags: DataTypes.STRING,
-    categoryId: DataTypes.INTEGER,
-    is_published: DataTypes.STRING,
+    categoryId: DataTypes.UUID,
+    isPublished: DataTypes.STRING,
     scheduled: DataTypes.STRING
-  }, {
-    underscore: true,
-  });
+  }, {});
   Blog.associate = (models) => {
     Blog.belongsTo(models.User, {
       foreignKey: 'authorId',

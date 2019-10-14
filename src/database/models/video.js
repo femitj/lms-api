@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Video = sequelize.define('Video', {
-    video_url: DataTypes.STRING,
-    courseId: DataTypes.INTEGER,
+    videoUrl: DataTypes.STRING,
+    courseId: DataTypes.UUID,
   }, {});
   Video.associate = (models) => {
     Video.belongsTo(models.Course, {

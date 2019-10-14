@@ -1,19 +1,18 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Videos', {
+  up: (queryInterface, Sequelize) => queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";').then(() => queryInterface.createTable('Videos', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.DataTypes.UUID,
+        defaultValue: Sequelize.literal('uuid_generate_v4()')
       },
-      video_url: {
+      videoUrl: {
         allowNull: true,
         type: Sequelize.STRING
       },
       courseId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DataTypes.UUID,
         references: {
           model: 'Courses',
           key: 'id',
@@ -29,7 +28,6 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('now')
       }
-    });
-  },
+    })),
   down: queryInterface => queryInterface.dropTable('Videos')
 };

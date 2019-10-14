@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     avatar: DataTypes.STRING,
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = (models) => {
     User.hasMany(models.Blog, {
-      foreignKey: 'userId',
+      foreignKey: 'authorId',
       as: 'blog',
       onUpdate: 'CASCADE'
     });

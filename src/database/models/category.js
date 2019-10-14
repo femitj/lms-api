@@ -2,13 +2,13 @@ module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define('Category', {
     title: DataTypes.STRING,
     slug: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
+    userId: DataTypes.UUID,
     type: DataTypes.STRING,
     avatar: DataTypes.STRING,
     description: DataTypes.TEXT,
-    no_of_mentees: DataTypes.INTEGER,
-    no_of_mentors: DataTypes.INTEGER,
-    courses_completed: DataTypes.INTEGER
+    noOfMentees: DataTypes.INTEGER,
+    noOfMentors: DataTypes.INTEGER,
+    coursesCompleted: DataTypes.INTEGER
   }, {});
   Category.associate = (models) => {
     Category.hasMany(models.Course, {

@@ -1,8 +1,8 @@
 module.exports = {
   up: queryInterface => queryInterface.bulkInsert('Authors', [
     {
-      id: '1',
-      userId: '1',
+      id: '0190ae78-d184-4258-add5-0b2c6982efef',
+      userId: 'ffe25dbe-29ea-4759-8461-ed116f6739dd',
       name: '',
       slug: '',
       bio: '',
@@ -11,8 +11,8 @@ module.exports = {
       linkedin: ''
     },
     {
-      id: '2',
-      userId: '1',
+      id: '3dd3b24a-7554-425e-a688-36afda195614',
+      userId: 'ffe25dbe-29ea-4759-8461-ed116f6739dd',
       name: '',
       slug: '',
       bio: '',
