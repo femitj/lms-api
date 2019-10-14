@@ -51,7 +51,7 @@ class Auth {
         true,
         201,
         'User signup successfully',
-        { user: { email, token } }
+        { user: { email, firstName, lastName, avatar, status, role, token } }
       );
       return res.status(response.code).json(response);
     } catch (err) {
@@ -168,7 +168,7 @@ class Auth {
     const result = hashHelper.comparePassword(hash, password);
     if (result) {
       const {
-        id, role, status
+        id, role, status, firstName, lastName, avatar
       } = user;
       const token = jwtHelper.generateToken({
         id,
@@ -180,7 +180,7 @@ class Auth {
         true,
         200,
         'user logged in sucessfully',
-        { user: { email, token }, }
+        { user: { email, firstName, lastName, avatar, status, role, token } }
       );
       return res.status(response.code).json(response);
     }
