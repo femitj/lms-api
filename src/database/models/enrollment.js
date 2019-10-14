@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Enrollment = sequelize.define('Enrollment', {
-    userId: DataTypes.INTEGER,
-    courseId: DataTypes.INTEGER
+    userId: DataTypes.UUID,
+    courseId: DataTypes.UUID
   }, {});
   Enrollment.associate = (models) => {
     Enrollment.belongsTo(models.User, {

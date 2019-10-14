@@ -2,8 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const Course = sequelize.define('Course', {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    videoId: DataTypes.INTEGER,
-    categoryId: DataTypes.INTEGER,
+    videoId: DataTypes.UUID,
+    categoryId: DataTypes.UUID,
     duration: DataTypes.STRING
   }, {});
   Course.associate = (models) => {

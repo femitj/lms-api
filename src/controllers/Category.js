@@ -13,20 +13,21 @@ class CategoryController {
         title, slug, type, avatar, description, coursesCompleted
       } = req.body;
 
-      await Category.create({
+      const category = await Category.create({
         title,
         slug,
-        user_id: userId,
+        userId,
         type,
         avatar,
         description,
-        courses_completed: coursesCompleted
+        coursesCompleted
       });
 
       const response = new Response(
         true,
         201,
-        'Category posted successfully'
+        'Category posted successfully',
+        { category }
       );
       return res.status(response.code).json(response);
     } catch (err) {
@@ -45,7 +46,7 @@ class CategoryController {
       const { id: userId } = payload;
 
       const category = await Category.findAll({
-        where: { user_id: userId, type: 'courses' },
+        where: { userId, type: 'courses' },
         returning: true
       });
       if (!category) {
@@ -80,7 +81,7 @@ class CategoryController {
       const { id: userId } = payload;
 
       const category = await Category.findAll({
-        where: { user_id: userId, type: 'blogs' },
+        where: { userId, type: 'blogs' },
         returning: true
       });
       if (!category) {

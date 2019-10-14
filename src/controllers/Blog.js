@@ -26,15 +26,15 @@ class BlogController {
       const blogs = await Blog.create({
         title,
         body,
-        featured_img: featuredImg,
+        featuredImg,
         slug,
-        meta_title: metaTitle,
-        meta_description: metaDescription,
-        meta_keywords: metaKeywords,
-        author_id: userId,
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        authorId: userId,
         tags,
-        Blogs_id: categoryId,
-        is_pubished: isPublished,
+        categoryId,
+        isPublished,
         scheduled
       });
 
@@ -77,12 +77,13 @@ class BlogController {
       );
       return res.status(response.code).json(response);
     } catch (err) {
-      const response = new Response(
-        false,
-        500,
-        'Server error, Please try again later',
-      );
-      return res.status(response.code).json(response);
+      console.log(err)
+      // const response = new Response(
+      //   false,
+      //   500,
+      //   'Server error, Please try again later',
+      // );
+      // return res.status(response.code).json(response);
     }
   }
 

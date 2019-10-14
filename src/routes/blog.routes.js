@@ -13,7 +13,6 @@ blogRoute.post(
 
 blogRoute.get(
   '/',
-  TokenHelper.verifyToken,
   Blog.getAll
 );
 

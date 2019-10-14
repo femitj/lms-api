@@ -17,7 +17,7 @@ class CourseController {
       const courses = await Course.create({
         title,
         description,
-        video_url: videoUrl,
+        videoUrl,
         categoryId,
         duration
       });
@@ -192,12 +192,13 @@ class CourseController {
       );
       return res.status(response.code).json(response);
     } catch (err) {
-      const response = new Response(
-        false,
-        500,
-        'Server error, Please try again later',
-      );
-      return res.status(response.code).json(response);
+      console.log(err)
+      // const response = new Response(
+      //   false,
+      //   500,
+      //   'Server error, Please try again later',
+      // );
+      // return res.status(response.code).json(response);
     }
   }
 }

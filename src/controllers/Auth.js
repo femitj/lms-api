@@ -3,11 +3,11 @@ import db from '../database/models';
 import jwtHelper from '../helpers/Token';
 import hashHelper from '../helpers/Hash';
 import Response from '../helpers/Response';
-// import EmailNotifications from '../helpers/EmailNotifications';
+import EmailNotifications from '../helpers/EmailNotifications';
 
 const { User } = db;
 const { hashPassword } = hashHelper;
-// const { sendPasswordResetMail } = EmailNotifications;
+const { sendPasswordResetMail } = EmailNotifications;
 
 /** authentication controller class */
 class Auth {
@@ -29,8 +29,8 @@ class Auth {
       } = req.body;
       const hashedPassword = hashPassword(password);
       const user = await User.create({
-        first_name: firstName,
-        last_name: lastName,
+        firstName,
+        lastName,
         email,
         password: hashedPassword,
         avatar,
@@ -43,9 +43,9 @@ class Auth {
         role,
         status
       });
-      // const verificationToken = jwtHelper.generateToken({ email });
-      // const verificationLink = `http://${req.headers.host}/api/v1/auth/verify?token=${verificationToken}`;
-      // await EmailNotifications.signupEmail(email, verificationLink, firstName);
+      const verificationToken = jwtHelper.generateToken({ email });
+      const verificationLink = `http://${req.headers.host}/api/v1/auth/verify?token=${verificationToken}`;
+      await EmailNotifications.signupEmail(email, verificationLink, firstName);
 
       const response = new Response(
         true,
@@ -73,34 +73,34 @@ class Auth {
    * @param {object} res Response Object
    * @returns {object} JSON Response
    */
-  // static async forgotPassword(req, res) {
-  //   const { email } = req.body;
-  //   try {
-  //     const user = await User.findOne({ where: { email } });
-  //     if (!user) {
-  //       const response = new Response(false, 404, 'Email does not exist');
-  //       return res.status(response.code).json(response);
-  //     }
-  //     const { id, password: secret } = user.dataValues;
-  //     // create reset token
-  //     const resetToken = jwtHelper.generateToken({ userId: id }, secret, '1h');
-  //     // send mail
-  //     sendPasswordResetMail(req, user, resetToken);
-  //     const response = new Response(
-  //       true,
-  //       200,
-  //       'Password reset mail sent'
-  //     );
-  //     return res.status(response.code).json(response);
-  //   } catch (error) {
-  //     const response = new Response(
-  //       false,
-  //       500,
-  //       'Server error, Please try again later'
-  //     );
-  //     return res.status(response.code).json(response);
-  //   }
-  // }
+  static async forgotPassword(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        const response = new Response(false, 404, 'Email does not exist');
+        return res.status(response.code).json(response);
+      }
+      const { id, password: secret } = user.dataValues;
+      // create reset token
+      const resetToken = jwtHelper.generateToken({ userId: id }, secret, '1h');
+      // send mail
+      sendPasswordResetMail(req, user, resetToken);
+      const response = new Response(
+        true,
+        200,
+        'Password reset mail sent'
+      );
+      return res.status(response.code).json(response);
+    } catch (error) {
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later'
+      );
+      return res.status(response.code).json(response);
+    }
+  }
 
   /**
  * @static
