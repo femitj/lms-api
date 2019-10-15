@@ -14,6 +14,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      videoUrl: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       videoId: {
         allowNull: true,
         type: Sequelize.DataTypes.UUID,
@@ -31,6 +35,14 @@ module.exports = {
       duration: {
         allowNull: true,
         type: Sequelize.STRING
+      },
+      startDate: {
+        allowNull: true,
+        type: Sequelize.DATEONLY
+      },
+      endDate: {
+        allowNull: true,
+        type: Sequelize.DATEONLY
       },
       createdAt: {
         allowNull: false,

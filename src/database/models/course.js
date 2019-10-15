@@ -2,9 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   const Course = sequelize.define('Course', {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
+    videoUrl: DataTypes.STRING,
     videoId: DataTypes.UUID,
     categoryId: DataTypes.UUID,
-    duration: DataTypes.STRING
+    duration: DataTypes.STRING,
+    startDate: DataTypes.DATEONLY,
+    endDate: DataTypes.DATEONLY
   }, {});
   Course.associate = (models) => {
     Course.belongsTo(models.Category, {

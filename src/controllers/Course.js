@@ -1,7 +1,7 @@
 import Response from '../helpers/Response';
 import db from '../database/models';
 
-const { Course, Enrollment, Category } = db;
+const { Course, Enrollment, Category, Video } = db;
 
 class CourseController {
   static async create(req, res) {
@@ -11,7 +11,9 @@ class CourseController {
         description,
         videoUrl,
         categoryId,
-        duration
+        duration,
+        startDate,
+        endDate,
       } = req.body;
 
       const courses = await Course.create({
@@ -19,7 +21,9 @@ class CourseController {
         description,
         videoUrl,
         categoryId,
-        duration
+        duration,
+        startDate,
+        endDate
       });
 
       const response = new Response(
@@ -76,7 +80,10 @@ class CourseController {
 
       const course = await Course.findOne({
         where: { id: courseId },
-        raw: true
+        raw: true,
+        include: [
+          { model: Category, as: 'category', attributes: ['id', 'title']}
+        ]
       });
       if (!course) {
         const response = new Response(false, 404, 'No Course found');
@@ -144,7 +151,8 @@ class CourseController {
         include: [
           {
             model: Course,
-            as: 'course'
+            as: 'course',
+            include: [{ model: Category, as: 'category', attributes: ['id', 'title']}]
           }
         ]
       });
@@ -192,13 +200,69 @@ class CourseController {
       );
       return res.status(response.code).json(response);
     } catch (err) {
-      console.log(err)
-      // const response = new Response(
-      //   false,
-      //   500,
-      //   'Server error, Please try again later',
-      // );
-      // return res.status(response.code).json(response);
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later',
+      );
+      return res.status(response.code).json(response);
+    }
+  }
+
+  static async updateCourse(req, res) {
+    try {
+      const { courseId } = req.params;
+
+      const {
+        title,
+        description,
+        videoUrl,
+        categoryId,
+        duration,
+        startDate,
+        endDate,
+      } = req.body;
+
+      await Course.update(
+        {
+          title,
+          description,
+          videoUrl,
+          categoryId,
+          duration,
+          startDate,
+          endDate,
+        },
+        {
+          where: { id: courseId },
+          returning: true,
+        }
+      );
+
+      const response = new Response(
+        true,
+        200,
+        'Course updated successfully',
+        {
+          course: {
+            title,
+            description,
+            videoUrl,
+            categoryId,
+            duration,
+            startDate,
+            endDate,
+          }
+        }
+      );
+      return res.status(response.code).json(response);
+    } catch (err) {
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later',
+      );
+      return res.status(response.code).json(response);
     }
   }
 }

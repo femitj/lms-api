@@ -6,6 +6,10 @@ module.exports = {
         type: Sequelize.DataTypes.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()')
       },
+      description: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       videoUrl: {
         allowNull: true,
         type: Sequelize.STRING
