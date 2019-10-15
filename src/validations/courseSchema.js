@@ -10,6 +10,8 @@ const courseSchema = [
 
   check('videoUrl')
     .optional()
+];
 
-
-]
+export {
+  courseSchema,
+}

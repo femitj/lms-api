@@ -3,9 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     videoUrl: DataTypes.STRING,
+    imgUrl: DataTypes.STRING,
     videoId: DataTypes.UUID,
     categoryId: DataTypes.UUID,
+    userId: DataTypes.UUID,
     duration: DataTypes.STRING,
+    free: DataTypes.BOOLEAN,
+    amount: DataTypes.INTEGER,
     startDate: DataTypes.DATEONLY,
     endDate: DataTypes.DATEONLY
   }, {});
@@ -13,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
     Course.belongsTo(models.Category, {
       foreignKey: 'categoryId',
       as: 'category',
+      onUpdate: 'CASCADE'
+    });
+    Course.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'user',
       onUpdate: 'CASCADE'
     });
     Course.hasMany(models.Video, {

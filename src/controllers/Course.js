@@ -10,6 +10,7 @@ class CourseController {
         title,
         description,
         videoUrl,
+        imgUrl,
         categoryId,
         duration,
         startDate,
@@ -20,6 +21,7 @@ class CourseController {
         title,
         description,
         videoUrl,
+        imgUrl,
         categoryId,
         duration,
         startDate,
@@ -46,7 +48,10 @@ class CourseController {
   static async getAll(req, res) {
     try {
       const courses = await Course.findAll({
-        raw: true
+        raw: true,
+        include: [
+          { model: Category, as: 'category', attributes: ['id', 'title']}
+        ]
       });
       if (!courses) {
         const response = new Response(
@@ -98,12 +103,13 @@ class CourseController {
       );
       return res.status(response.code).json(response);
     } catch (err) {
-      const response = new Response(
-        false,
-        500,
-        'Server error, Please try again later',
-      );
-      return res.status(response.code).json(response);
+      // const response = new Response(
+      //   false,
+      //   500,
+      //   'Server error, Please try again later',
+      // );
+      // return res.status(response.code).json(response);
+      console.log(err)
     }
   }
 
@@ -152,7 +158,7 @@ class CourseController {
           {
             model: Course,
             as: 'course',
-            include: [{ model: Category, as: 'category', attributes: ['id', 'title']}]
+            // include: [{ model: Category, as: 'category', attributes: ['id', 'title']}]
           }
         ]
       });
@@ -217,6 +223,7 @@ class CourseController {
         title,
         description,
         videoUrl,
+        imgUrl,
         categoryId,
         duration,
         startDate,
@@ -228,6 +235,7 @@ class CourseController {
           title,
           description,
           videoUrl,
+          imgUrl,
           categoryId,
           duration,
           startDate,
@@ -248,6 +256,7 @@ class CourseController {
             title,
             description,
             videoUrl,
+            imgUrl,
             categoryId,
             duration,
             startDate,

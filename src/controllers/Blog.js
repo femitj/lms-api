@@ -77,13 +77,12 @@ class BlogController {
       );
       return res.status(response.code).json(response);
     } catch (err) {
-      console.log(err)
-      // const response = new Response(
-      //   false,
-      //   500,
-      //   'Server error, Please try again later',
-      // );
-      // return res.status(response.code).json(response);
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later',
+      );
+      return res.status(response.code).json(response);
     }
   }
 

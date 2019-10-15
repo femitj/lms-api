@@ -18,6 +18,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      imgUrl: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       videoId: {
         allowNull: true,
         type: Sequelize.DataTypes.UUID,
@@ -32,9 +36,26 @@ module.exports = {
           key: 'id',
         }
       },
+      userId: {
+        allowNull: true,
+        type: Sequelize.DataTypes.UUID,
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+        }
+      },
       duration: {
         allowNull: true,
         type: Sequelize.STRING
+      },
+      free: {
+        allowNull: true,
+        type: Sequelize.BOOLEAN
+      },
+      amount: {
+        allowNull: true,
+        type: Sequelize.INTEGER
       },
       startDate: {
         allowNull: true,

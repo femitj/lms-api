@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import Course from '../controllers/Course';
 import TokenHelper from '../helpers/Token';
+import {
+  courseSchema,
+} from '../validations/courseSchema';
+import validator from '../middlewares/validator';
 
 
 const courseRoute = Router();
@@ -8,6 +12,7 @@ const courseRoute = Router();
 courseRoute.post(
   '/course',
   TokenHelper.verifyInstructorToken('instructor'),
+  validator(courseSchema),
   Course.create
 );
 
@@ -40,5 +45,11 @@ courseRoute.post(
   TokenHelper.verifyToken,
   Course.enroll
 );
+
+courseRoute.put(
+  '/course/:courseId',
+  TokenHelper.verifyInstructorToken('instructor'),
+  Course.updateCourse
+)
 
 export default courseRoute;
