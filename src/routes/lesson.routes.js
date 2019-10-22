@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import TokenHelper from '../helpers/Token';
-import Lesson from '../controllers/Lesson';
+import Lesson from '../controllers/LessonController';
 
 const lessonRoute = Router();
 
@@ -11,19 +11,19 @@ lessonRoute.post(
 );
 
 lessonRoute.get(
-  '/lesson/:lessonId',
+  '/lesson/:id',
   TokenHelper.verifyToken,
   Lesson.getOne
 );
 
 lessonRoute.get(
-  '/lessons/:courseId',
+  '/lessons/:moduleId',
   TokenHelper.verifyToken,
-  Lesson.getAllByCourse
+  Lesson.getAllByModule
 );
 
 lessonRoute.put(
-  '/lesson/:lessonId',
+  '/lesson/:id',
   TokenHelper.verifyInstructorToken('instructor'),
   Lesson.updateLesson
 );

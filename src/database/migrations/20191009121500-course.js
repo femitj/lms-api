@@ -14,6 +14,14 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      overview: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
+      about: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
       videoUrl: {
         allowNull: true,
         type: Sequelize.STRING
@@ -49,9 +57,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      free: {
+      status: {
         allowNull: true,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.ENUM('free', 'paid'),
+        defaultValue: 'free'
       },
       amount: {
         allowNull: true,

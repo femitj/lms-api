@@ -152,43 +152,45 @@ class Auth {
    */
   static async login(req, res) {
     const { email, password } = req.body;
-
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
+    try{
+      const user = await User.findOne({ where: { email } });
+      console.log(user);
+      if (!user) {
+        const response = new Response(
+          false,
+          404,
+          'Incorrect email or password'
+        );
+        return res.status(response.code).json(response);
+      }
+      const hash = user.password;
+      const result = hashHelper.comparePassword(hash, password);
+      if (result) {
+        const {
+          id, role, status, firstName, lastName, avatar
+        } = user;
+        const token = jwtHelper.generateToken({
+          id,
+          email,
+          role,
+          status
+        });
+        const response = new Response(
+          true,
+          200,
+          'user logged in sucessfully',
+          { user: { email, firstName, lastName, avatar, status, role, token } }
+        );
+        return res.status(response.code).json(response);
+      } 
+    }catch(err){
       const response = new Response(
         false,
-        404,
-        'Incorrect email or password',
-        {}
+        401,
+        'Incorrect email or password'
       );
       return res.status(response.code).json(response);
     }
-    const hash = user.password;
-    const result = hashHelper.comparePassword(hash, password);
-    if (result) {
-      const {
-        id, role, status, firstName, lastName, avatar
-      } = user;
-      const token = jwtHelper.generateToken({
-        id,
-        email,
-        role,
-        status
-      });
-      const response = new Response(
-        true,
-        200,
-        'user logged in sucessfully',
-        { user: { email, firstName, lastName, avatar, status, role, token } }
-      );
-      return res.status(response.code).json(response);
-    }
-    const response = new Response(
-      false,
-      401,
-      'Incorrect email or password'
-    );
-    return res.status(response.code).json(response);
   }
 
   /**

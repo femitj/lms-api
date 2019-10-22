@@ -1,28 +1,30 @@
 import Response from '../helpers/Response';
 import db from '../database/models';
 
-const { Video } = db;
+const { Lesson } = db;
 
-class Lesson {
+class LessonController {
   static async create(req, res) {
     try {
       const {
         description,
         videoUrl,
-        courseId,
+        fileUrl,
+        moduleId,
       } = req.body;
 
-      const video = await Video.create({
+      const lesson = await Lesson.create({
         description,
         videoUrl,
-        courseId
+        fileUrl,
+        moduleId
       });
 
       const response = new Response(
         true,
         201,
-        'Course posted successfully',
-        { video }
+        'Lesson posted successfully',
+        { lesson }
       );
       return res.status(response.code).json(response);
     } catch (err) {
@@ -37,22 +39,22 @@ class Lesson {
 
   static async getOne(req, res) {
     try {
-      const { lessonId } = req.params;
+      const { id } = req.params;
 
-      const video = await Video.findOne({
-        where: { id: lessonId },
+      const lesson = await Lesson.findOne({
+        where: { id },
         raw: true
       });
-      if (!video) {
-        const response = new Response(false, 404, 'No Video found');
+      if (!lesson) {
+        const response = new Response(false, 404, 'No Lesson found');
         return res.status(response.code).json(response);
       };
 
       const response = new Response(
         true,
         200,
-        'Video retrieved successfully',
-        { video }
+        'Lesson retrieved successfully',
+        { lesson }
       );
       return res.status(response.code).json(response);
     } catch (err) {
@@ -65,24 +67,24 @@ class Lesson {
     }
   }
   
-    static async getAllByCourse(req, res) {
+    static async getAllByModule(req, res) {
     try {
-      const { courseId } = req.params;
+      const { moduleId } = req.params;
 
-      const videos = await Video.findAll({
-        where: { courseId },
+      const lessons = await Lesson.findAll({
+        where: { moduleId },
         raw: true
       });
-      if (!videos) {
-        const response = new Response(false, 404, 'No Video found');
+      if (!lessons) {
+        const response = new Response(false, 404, 'No Lesson found');
         return res.status(response.code).json(response);
       };
 
       const response = new Response(
         true,
         200,
-        'Video retrieved successfully',
-        { videos }
+        'Lessons retrieved successfully',
+        { lessons }
       );
       return res.status(response.code).json(response);
     } catch (err) {
@@ -97,20 +99,21 @@ class Lesson {
 
   static async updateLesson(req, res) {
     try {
-      const { videoId } = req.params;
+      const { id } = req.params;
 
       const {
         description,
         videoUrl,
-        courseId
+        fileUrl,
+        moduleId
       } = req.body;
 
-      await Video.update(
+      await Lesson.update(
         {
-          description, videoUrl, courseId
+          description, videoUrl, fileUrl, moduleId
         },
         {
-          where: { id: videoId },
+          where: { id },
           returning: true,
         }
       );
@@ -121,7 +124,7 @@ class Lesson {
         'Lesson updated successfully',
         {
           lesson: {
-            description, videoUrl, courseId
+            description, videoUrl, fileUrl, moduleId
           }
         }
       );
@@ -137,4 +140,4 @@ class Lesson {
   }
 }
 
-export default Lesson;
+export default LessonController;

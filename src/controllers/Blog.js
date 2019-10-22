@@ -1,7 +1,8 @@
+import slugify from 'slugify';
 import Response from '../helpers/Response';
 import db from '../database/models';
 
-const { Blog } = db;
+const { Blog, User, Category } = db;
 
 class BlogController {
   static async create(req, res) {
@@ -23,11 +24,27 @@ class BlogController {
         scheduled
       } = req.body;
 
+      const newSlug = slugify(slug);
+
+      const isSlugExist = await Blog.findOne({
+        where: { slug: newSlug },
+        raw: true,
+      });
+
+      if(isSlugExist) {
+        const response = new Response(
+          false,
+          400,
+          'Slug exist, try something else'
+          )
+        return res.status(400).json(response);
+      };
+
       const blogs = await Blog.create({
         title,
         body,
         featuredImg,
-        slug,
+        slug: newSlug,
         metaTitle,
         metaDescription,
         metaKeywords,
@@ -46,19 +63,22 @@ class BlogController {
       );
       return res.status(response.code).json(response);
     } catch (err) {
-      const response = new Response(
-        false,
-        500,
-        'Server error, Please try again later',
-      );
-      return res.status(response.code).json(response);
-    }
+        const response = new Response(
+          false,
+          500,
+          'Server error, Please try again later',
+        );
+        return res.status(response.code).json(response);
+      }
   }
 
   static async getAll(req, res) {
     try {
       const blogs = await Blog.findAll({
-        raw: true
+        raw: true,
+        include: [
+          { model: User, as: 'user', attributes: ['firstName', 'lastName']}
+        ]
       });
       if (!blogs) {
         const response = new Response(
@@ -88,14 +108,18 @@ class BlogController {
 
   static async getOne(req, res) {
     try {
-      const { blogId } = req.params;
+      const { slug } = req.params;
 
-      const blogs = await Blog.findOne({
-        where: { id: blogId },
-        raw: true
+      const blog = await Blog.findOne({
+        where: { slug },
+        raw: true,
+        include: [
+          { model: User, as: 'user', attributes: ['firstName', 'lastName']},
+          { model: Category, as: 'category', attributes: ['title']}
+        ]
       });
-      if (!blogs) {
-        const response = new Response(false, 404, 'No Blogs found');
+      if (!blog) {
+        const response = new Response(false, 404, 'No Blog found');
         return res.status(response.code).json(response);
       }
 
@@ -103,7 +127,7 @@ class BlogController {
         true,
         200,
         'Blog retrieved successfully',
-        { blogs }
+        { blog }
       );
       return res.status(response.code).json(response);
     } catch (err) {

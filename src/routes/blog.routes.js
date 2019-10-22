@@ -6,18 +6,18 @@ import TokenHelper from '../helpers/Token';
 const blogRoute = Router();
 
 blogRoute.post(
-  '/',
+  '/blog',
   TokenHelper.verifyInstructorToken('instructor'),
   Blog.create
 );
 
 blogRoute.get(
-  '/',
+  '/blogs',
   Blog.getAll
 );
 
 blogRoute.get(
-  '/:blogId',
+  '/blog/:slug',
   Blog.getOne
 );
 

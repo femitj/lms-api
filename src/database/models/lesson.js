@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const Video = sequelize.define('Video', {
+  const Lesson = sequelize.define('Lesson', {
     description: DataTypes.STRING,
     videoUrl: DataTypes.STRING,
-    courseId: DataTypes.UUID,
+    fileUrl: DataTypes.STRING,
+    moduleId: DataTypes.UUID,
   }, {});
-  Video.associate = (models) => {
+  Lesson.associate = (models) => {
     // Video.belongsTo(models.Course, {
     //   foreignKey: 'courseId',
     //   as: 'course',
@@ -12,5 +13,5 @@ module.exports = (sequelize, DataTypes) => {
     //   onUpdate: 'CASCADE'
     // });
   };
-  return Video;
+  return Lesson;
 };
